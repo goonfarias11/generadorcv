@@ -20,16 +20,19 @@ export function middleware(req) {
   // Cross-Origin-Resource-Policy: controla quién puede cargar este recurso
   response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   
-  // CSP compatible con Next.js 14 - permite inline scripts con hashes automáticos
+  // CSP moderna con strict-dynamic (Next.js 14 compatible)
+  // unsafe-eval es necesario para Next.js HMR
+  // unsafe-inline en scripts se ignora cuando strict-dynamic está presente
   const cspHeader = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https:",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: https: blob:",
     "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live",
-    "frame-ancestors 'none'",
+    "object-src 'none'",
     "base-uri 'self'",
+    "frame-ancestors 'none'",
     "form-action 'self'",
     "upgrade-insecure-requests",
   ].join('; ');

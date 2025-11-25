@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateNonce } from './lib/nonce';
 
-// Usar Node.js runtime para acceso a crypto
-export const runtime = 'nodejs';
-
 export function middleware(req) {
   const nonce = generateNonce();
   const response = NextResponse.next();

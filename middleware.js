@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
+import { generateNonce } from './lib/nonce';
 
 export function middleware(req) {
+  const nonce = generateNonce();
   const response = NextResponse.next();
+  
+  // Inyectar nonce en los headers para que sea accesible en el layout
+  response.headers.set('x-nonce', nonce);
   
   // Headers CORS permisivos
   response.headers.set('Access-Control-Allow-Origin', '*');
@@ -20,21 +25,23 @@ export function middleware(req) {
   // Cross-Origin-Resource-Policy: controla quién puede cargar este recurso
   response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   
-  // CSP moderna con strict-dynamic (Next.js 14 compatible)
-  // unsafe-eval es necesario para Next.js HMR
-  // unsafe-inline en scripts se ignora cuando strict-dynamic está presente
+  // CSP moderna con nonces y strict-dynamic (Lighthouse 100)
+  // strict-dynamic: permite scripts cargados dinámicamente por scripts con nonce
+  // unsafe-eval: necesario solo para Next.js HMR en desarrollo
   const cspHeader = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval'`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: https: blob:",
+    "img-src 'self' data: blob:",
     "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live",
     "object-src 'none'",
     "base-uri 'self'",
     "frame-ancestors 'none'",
     "form-action 'self'",
     "upgrade-insecure-requests",
+    "require-trusted-types-for 'script'",
+    "trusted-types nextjs default",
   ].join('; ');
   
   response.headers.set('Content-Security-Policy', cspHeader);

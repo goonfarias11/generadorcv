@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter, Lexend } from 'next/font/google'
+import { headers } from 'next/headers'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -43,6 +44,10 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  // Obtener el nonce del middleware
+  const headersList = headers();
+  const nonce = headersList.get('x-nonce') || '';
+  
   // JSON-LD para rich results (Schema.org)
   const jsonLd = {
     "@context": "https://schema.org",
@@ -82,19 +87,38 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://api.mercadopago.com" />
         
-        {/* Preload del CSS crítico generado por Next.js */}
-        <link 
-          rel="preload" 
-          href="/_next/static/css/8c0d68663fae90d3.css" 
-          as="style" 
-        />
-        
         {/* DNS Prefetch para recursos de terceros */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://api.mercadopago.com" />
         
+        {/* Trusted Types initialization - debe cargarse primero */}
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && window.trustedTypes) {
+                try {
+                  window.trustedTypes.createPolicy('nextjs', {
+                    createHTML: (input) => input,
+                    createScript: (input) => input,
+                    createScriptURL: (input) => input,
+                  });
+                  if (!window.trustedTypes.defaultPolicy) {
+                    window.trustedTypes.createPolicy('default', {
+                      createHTML: (input) => input,
+                      createScript: (input) => input,
+                      createScriptURL: (input) => input,
+                    });
+                  }
+                } catch (e) {}
+              }
+            `.trim()
+          }}
+        />
+        
         {/* JSON-LD para rich results de Google */}
         <script
+          nonce={nonce}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />

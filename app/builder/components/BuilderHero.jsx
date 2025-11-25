@@ -10,7 +10,7 @@ export default function BuilderHero() {
         
         {/* Título y Subtítulo */}
         <div className="text-center mb-6 md:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-neutral-900 mb-2 md:mb-3">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-neutral-900 mb-2 md:mb-3" style={{ fontSize: 'inherit', fontWeight: 'inherit' }}>
             Creá tu CV profesional
           </h1>
           <p className="text-sm md:text-base text-neutral-600 max-w-2xl mx-auto">

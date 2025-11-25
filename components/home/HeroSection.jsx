@@ -17,7 +17,7 @@ export default function HeroSection() {
           <span className="text-neutral-700 font-semibold text-xs md:text-sm">Sin tarjeta • Sin instalación</span>
         </div>
         
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-neutral-900 mb-4 md:mb-5 leading-tight px-2">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-neutral-900 mb-4 md:mb-5 leading-tight px-2" style={{ fontSize: 'inherit', fontWeight: 'inherit', margin: 0, padding: 0 }}>
           Crea tu CV profesional
           <span className="block bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mt-1 md:mt-2">
             en minutos

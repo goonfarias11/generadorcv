@@ -103,6 +103,16 @@ export default function RootLayout({ children }) {
                     createScript: (input) => input,
                     createScriptURL: (input) => input,
                   });
+                  window.trustedTypes.createPolicy('nextjs', {
+                    createHTML: (input) => input,
+                    createScript: (input) => input,
+                    createScriptURL: (input) => input,
+                  });
+                  window.trustedTypes.createPolicy('nextjs#bundler', {
+                    createHTML: (input) => input,
+                    createScript: (input) => input,
+                    createScriptURL: (input) => input,
+                  });
                   if (!window.trustedTypes.defaultPolicy) {
                     window.trustedTypes.createPolicy('default', {
                       createHTML: (input) => input,

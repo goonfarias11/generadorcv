@@ -41,7 +41,7 @@ export function middleware(req) {
     "form-action 'self'",
     "upgrade-insecure-requests",
     "require-trusted-types-for 'script'",
-    "trusted-types nextjs default",
+    "trusted-types nextjs nextjs#bundler default 'allow-duplicates'",
   ].join('; ');
   
   response.headers.set('Content-Security-Policy', cspHeader);

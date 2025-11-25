@@ -8,10 +8,10 @@ import HowItWorksSection from '@/components/home/HowItWorksSection'
 
 // Dynamic imports para componentes grandes (code splitting)
 const TemplatesGallery = dynamic(() => import('@/components/home/TemplatesGallery'), {
-  loading: () => <div className="py-16 text-center text-neutral-400">Cargando plantillas...</div>
+  loading: () => <div className="py-16 text-center text-neutral-600">Cargando plantillas...</div>
 })
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
-  loading: () => <div className="py-16 text-center text-neutral-400">Cargando testimonios...</div>
+  loading: () => <div className="py-16 text-center text-neutral-600">Cargando testimonios...</div>
 })
 const CTASection = dynamic(() => import('@/components/home/CTASection'))
 const Footer = dynamic(() => import('@/components/home/Footer'))

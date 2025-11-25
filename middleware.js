@@ -26,18 +26,18 @@ export function middleware(req) {
   // Cross-Origin-Resource-Policy: controla quién puede cargar este recurso
   response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   
-  // CSP mejorado con nonce (reemplaza unsafe-inline)
-  // Next.js requiere 'unsafe-eval' para HMR y 'unsafe-inline' para estilos inline
+  // CSP mejorado sin unsafe-inline (usando nonce)
   const cspHeader = [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
+    `script-src 'self' 'unsafe-eval' 'nonce-${nonce}'`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://api.mercadopago.com https://vercel.com",
+    "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
+    "upgrade-insecure-requests",
   ].join('; ');
   
   response.headers.set('Content-Security-Policy', cspHeader);

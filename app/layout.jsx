@@ -74,6 +74,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${inter.variable} ${lexend.variable}`}>
       <head>
+        {/* Meta tags de seguridad */}
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        
         {/* Preconnect a recursos externos críticos */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -97,6 +100,20 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.className} bg-neutral-50 antialiased`}>
+        {/* Inicializar Trusted Types */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== 'undefined' && window.trustedTypes) {
+              try {
+                window.trustedTypes.createPolicy('default', {
+                  createHTML: (input) => input,
+                  createScript: (input) => input,
+                  createScriptURL: (input) => input,
+                });
+              } catch (e) {}
+            }
+          `
+        }} />
         <main>{children}</main>
       </body>
     </html>

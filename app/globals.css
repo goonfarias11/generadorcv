@@ -11,6 +11,11 @@
   * {
     @apply border-neutral-200;
   }
+  
+  /* Mejoras de accesibilidad: foco visible */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
 
   body {
     @apply bg-neutral-50 text-neutral-900 antialiased;

@@ -19,14 +19,15 @@ export default function Header() {
           </span>
         </div>
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
-          <a href="#beneficios" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">Beneficios</a>
-          <a href="#plantillas" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">Plantillas</a>
-          <a href="/blog" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">Blog</a>
-          <a href="/soporte" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">Soporte</a>
+          <a href="#beneficios" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">Beneficios</a>
+          <a href="#plantillas" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">Plantillas</a>
+          <a href="/blog" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">Blog</a>
+          <a href="/soporte" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">Soporte</a>
         </div>
         <button
           onClick={() => router.push('/builder')}
-          className="btn-primary flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-2.5 text-sm md:text-base whitespace-nowrap"
+          className="btn-primary flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-2.5 text-sm md:text-base whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+          aria-label="Crear un nuevo currículum vitae"
         >
           <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

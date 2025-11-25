@@ -17,7 +17,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h4 className="text-white font-display font-bold text-lg md:text-xl">GeneradorCV</h4>
+              <h3 className="text-white font-display font-bold text-lg md:text-xl">GeneradorCV</h3>
             </div>
             <p className="text-xs md:text-sm text-neutral-400 leading-relaxed pr-4">
               Crea currículums profesionales en minutos

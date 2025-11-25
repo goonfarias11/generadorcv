@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
-import { generateNonce } from './lib/nonce';
 
 export function middleware(req) {
-  const nonce = generateNonce();
   const response = NextResponse.next();
-  
-  // Guardar nonce en headers de respuesta para usarlo en _document
-  response.headers.set('x-nonce', nonce);
   
   // Headers CORS permisivos
   response.headers.set('Access-Control-Allow-Origin', '*');
@@ -16,8 +11,7 @@ export function middleware(req) {
   // Headers de seguridad avanzados
   response.headers.set('X-DNS-Prefetch-Control', 'on');
   
-  // HSTS con preload (roll-out gradual recomendado: empezar con max-age bajo y subir)
-  // Producción: max-age=63072000 (2 años) + includeSubDomains + preload
+  // HSTS con preload
   response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   
   // Cross-Origin-Opener-Policy: aísla el contexto de navegación
@@ -26,12 +20,12 @@ export function middleware(req) {
   // Cross-Origin-Resource-Policy: controla quién puede cargar este recurso
   response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   
-  // CSP mejorado sin unsafe-inline (usando nonce)
+  // CSP compatible con Next.js 14 - permite inline scripts con hashes automáticos
   const cspHeader = [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-eval' 'nonce-${nonce}'`,
-    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-    "font-src 'self' https://fonts.gstatic.com",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https:",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: https: blob:",
     "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live",
     "frame-ancestors 'none'",

@@ -100,20 +100,6 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.className} bg-neutral-50 antialiased`}>
-        {/* Inicializar Trusted Types */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== 'undefined' && window.trustedTypes) {
-              try {
-                window.trustedTypes.createPolicy('default', {
-                  createHTML: (input) => input,
-                  createScript: (input) => input,
-                  createScriptURL: (input) => input,
-                });
-              } catch (e) {}
-            }
-          `
-        }} />
         <main>{children}</main>
       </body>
     </html>

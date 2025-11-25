@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-lexend: 'Lexend', 'Inter', sans-serif;
+  }
+
+  * {
+    @apply border-neutral-200;
+  }
+
+  body {
+    @apply bg-neutral-50 text-neutral-900 antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Botón Premium Principal - MEJORADO */
+  .btn-primary {
+    @apply px-7 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white 
+           rounded-xl font-bold text-sm shadow-lg hover:shadow-2xl 
+           hover:from-primary-700 hover:to-primary-800 
+           active:scale-[0.98] transition-all duration-200 
+           focus:outline-none focus:ring-4 focus:ring-primary-300 focus:ring-offset-2
+           disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-lg;
+  }
+
+  /* Botón Secundario - MEJORADO */
+  .btn-secondary {
+    @apply px-7 py-3.5 bg-white text-neutral-700 border-2 border-neutral-300 
+           rounded-xl font-bold text-sm shadow-md hover:border-primary-400 
+           hover:bg-neutral-50 hover:shadow-lg active:scale-[0.98] transition-all duration-200
+           focus:outline-none focus:ring-4 focus:ring-neutral-200 focus:ring-offset-2;
+  }
+
+  /* Card Premium - MEJORADO */
+  .card-premium {
+    @apply bg-white rounded-2xl shadow-lg border-2 border-neutral-100 p-8
+           hover:shadow-2xl hover:border-neutral-200 transition-all duration-300;
+  }
+
+  /* Input Premium - MEJORADO */
+  .input-premium {
+    @apply w-full px-5 py-4 bg-white border-2 border-neutral-300 rounded-xl
+           text-base font-medium placeholder:text-neutral-400 placeholder:font-normal
+           focus:border-primary-500 focus:ring-4 focus:ring-primary-100 
+           hover:border-neutral-400
+           transition-all duration-200 outline-none
+           disabled:bg-neutral-50 disabled:cursor-not-allowed;
+  }
+
+  /* Textarea Premium - NUEVO */
+  .textarea-premium {
+    @apply input-premium min-h-[120px] resize-y;
+  }
+
+  /* Select Premium - NUEVO */
+  .select-premium {
+    @apply input-premium appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQgNkw4IDEwTDEyIDYiIHN0cm9rZT0iIzZCNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==')] bg-[center_right_1rem] bg-no-repeat pr-12;
+  }
+
+  /* Label Premium - NUEVO */
+  .label-premium {
+    @apply block text-base font-bold text-neutral-800 mb-2.5;
+  }
+
+  /* Helper Text - NUEVO */
+  .helper-text {
+    @apply text-sm text-neutral-500 mt-2 flex items-start gap-2;
+  }
+
+  /* Error Text - NUEVO */
+  .error-text {
+    @apply text-sm text-red-600 font-medium mt-2 flex items-center gap-1.5;
+  }
+
+  /* Badge - MEJORADO */
+  .badge {
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold tracking-wide;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-800 border border-primary-200;
+  }
+
+  .badge-success {
+    @apply badge bg-green-700 text-white border border-green-800;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-600 text-white border border-amber-700;
+  }
+
+  /* Section Title - NUEVO */
+  .section-title {
+    @apply text-3xl font-display font-extrabold text-neutral-900 tracking-tight mb-3;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-neutral-600 font-medium mb-6;
+  }
+
+  /* Pro Badge - NUEVO */
+  .pro-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full 
+           bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold
+           shadow-md;
+  }
+
+  /* Locked Overlay - NUEVO */
+  .locked-overlay {
+    @apply absolute inset-0 bg-neutral-900/10 backdrop-blur-sm rounded-xl
+           flex items-center justify-center z-10;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .glass-effect {
+    @apply bg-white/90 backdrop-blur-xl;
+  }
+
+  /* Shadow Glow - NUEVO */
+  .shadow-glow {
+    box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.4);
+  }
+
+  .shadow-glow-success {
+    box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.4);
+  }
+
+  .shadow-glow-warning {
+    box-shadow: 0 10px 40px -10px rgba(245, 158, 11, 0.4);
+  }
+
+  /* Custom Scrollbar - NUEVO */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-neutral-100 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 rounded-full hover:bg-neutral-400 transition-colors;
+  }
+
+  /* Hide Scrollbar - Para scroll horizontal */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

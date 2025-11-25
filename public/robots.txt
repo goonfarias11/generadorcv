@@ -1,0 +1,11 @@
+# Robots.txt para Generador de CV
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap
+Sitemap: https://generador-cv.vercel.app/sitemap.xml

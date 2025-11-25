@@ -1,0 +1,159 @@
+{
+  "metadata": {
+    "title": "Free Professional Resume Builder | Create Your CV Online",
+    "description": "Create your professional resume for free with ATS-optimized templates. Download in PDF, PNG or DOCX. AI-powered tools and smart scoring."
+  },
+  "nav": {
+    "features": "Features",
+    "templates": "Templates",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "login": "Sign In",
+    "getStarted": "Get Started Free"
+  },
+  "hero": {
+    "badge": "🚀 FREE & UNLIMITED",
+    "title": "Create Your Professional Resume",
+    "subtitle": "in minutes",
+    "description": "AI-powered resume builder with premium templates and smart scoring. Optimized for ATS and recruiters.",
+    "ctaPrimary": "Create My Resume Free",
+    "ctaSecondary": "View Templates",
+    "stats": {
+      "users": "resumes created",
+      "rating": "rating",
+      "templates": "templates"
+    }
+  },
+  "features": {
+    "title": "Everything you need to stand out",
+    "items": {
+      "templates": {
+        "title": "8 Premium Templates",
+        "description": "Professional designs optimized for ATS and recruiters"
+      },
+      "ai": {
+        "title": "AI Integration",
+        "description": "Smart rewriting of sections with GPT-4"
+      },
+      "score": {
+        "title": "Smart Score",
+        "description": "Real-time analysis of your resume quality"
+      },
+      "export": {
+        "title": "Multiple Formats",
+        "description": "Download in PDF, PNG, DOCX or ZIP"
+      },
+      "autosave": {
+        "title": "Auto Save",
+        "description": "Never lose your progress with autosave"
+      },
+      "customization": {
+        "title": "Full Customization",
+        "description": "Colors, fonts and design tailored to you"
+      },
+      "preview": {
+        "title": "Real-time Preview",
+        "description": "See changes instantly while editing"
+      },
+      "free": {
+        "title": "100% Free",
+        "description": "No hidden costs or mandatory subscriptions"
+      }
+    }
+  },
+  "templates": {
+    "title": "Professional templates for every industry",
+    "viewAll": "View all templates"
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "step1": {
+      "title": "1. Fill in your details",
+      "description": "Enter your personal information, experience and education"
+    },
+    "step2": {
+      "title": "2. Choose a template",
+      "description": "Select from 8 professional designs"
+    },
+    "step3": {
+      "title": "3. Download your resume",
+      "description": "Export in PDF, PNG, DOCX or ZIP"
+    }
+  },
+  "pricing": {
+    "title": "Plans for everyone",
+    "free": {
+      "name": "Free",
+      "price": "$0",
+      "period": "forever",
+      "features": [
+        "4 basic templates",
+        "PDF export",
+        "Basic score",
+        "Auto save",
+        "Unlimited resumes"
+      ],
+      "cta": "Start Free",
+      "popular": false
+    },
+    "pro": {
+      "name": "PRO",
+      "price": "$9.99",
+      "period": "per month",
+      "features": [
+        "8 premium templates",
+        "PDF, PNG, DOCX, ZIP",
+        "Advanced AI score",
+        "Full customization",
+        "AI rewriting",
+        "No watermark",
+        "Priority support"
+      ],
+      "cta": "Upgrade to PRO",
+      "popular": true
+    }
+  },
+  "cta": {
+    "title": "Ready to land your next job?",
+    "description": "Join thousands of professionals who already created their perfect resume",
+    "button": "Create My Resume Now"
+  },
+  "footer": {
+    "description": "The best tool to create professional resumes online. Free, fast and easy.",
+    "product": {
+      "title": "Product",
+      "templates": "Templates",
+      "features": "Features",
+      "pricing": "Pricing",
+      "blog": "Blog"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About us",
+      "contact": "Contact",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    },
+    "resources": {
+      "title": "Resources",
+      "help": "Help Center",
+      "tutorials": "Tutorials",
+      "examples": "Resume Examples",
+      "tips": "Tips"
+    },
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  }
+}

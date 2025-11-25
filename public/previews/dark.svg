@@ -1,0 +1,62 @@
+<svg width="400" height="566" viewBox="0 0 400 566" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo oscuro -->
+  <rect width="400" height="566" fill="#0f172a"/>
+  
+  <!-- Header dark con acento -->
+  <rect width="400" height="4" fill="url(#gradDark)"/>
+  <defs>
+    <linearGradient id="gradDark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect x="50" y="35" width="140" height="14" fill="#f8fafc"/>
+  <rect x="50" y="56" width="100" height="6" fill="#6366f1"/>
+  <rect x="50" y="70" width="90" height="5" fill="#cbd5e1"/>
+  <rect x="50" y="80" width="95" height="5" fill="#cbd5e1"/>
+  <rect x="50" y="90" width="85" height="5" fill="#cbd5e1"/>
+  
+  <!-- Línea divisora -->
+  <rect x="50" y="115" width="300" height="2" fill="#1e293b"/>
+  
+  <!-- Sección 1 -->
+  <rect x="50" y="135" width="80" height="8" fill="#6366f1"/>
+  <rect x="50" y="155" width="300" height="4" fill="#e2e8f0"/>
+  <rect x="50" y="163" width="310" height="4" fill="#e2e8f0"/>
+  <rect x="50" y="171" width="290" height="4" fill="#e2e8f0"/>
+  <rect x="50" y="179" width="280" height="4" fill="#e2e8f0"/>
+  
+  <!-- Sección 2 con bloques -->
+  <rect x="50" y="205" width="80" height="8" fill="#6366f1"/>
+  
+  <rect x="50" y="230" width="340" height="60" rx="8" fill="#1e293b"/>
+  <rect x="65" y="245" width="100" height="7" fill="#f8fafc"/>
+  <rect x="280" y="245" width="50" height="5" fill="#94a3b8"/>
+  <rect x="65" y="260" width="70" height="5" fill="#cbd5e1"/>
+  <rect x="65" y="272" width="250" height="3" fill="#64748b"/>
+  <rect x="65" y="279" width="260" height="3" fill="#64748b"/>
+  
+  <rect x="50" y="305" width="340" height="60" rx="8" fill="#1e293b"/>
+  <rect x="65" y="320" width="100" height="7" fill="#f8fafc"/>
+  <rect x="280" y="320" width="50" height="5" fill="#94a3b8"/>
+  <rect x="65" y="335" width="70" height="5" fill="#cbd5e1"/>
+  <rect x="65" y="347" width="250" height="3" fill="#64748b"/>
+  
+  <!-- Sección 3 -->
+  <rect x="50" y="385" width="80" height="8" fill="#6366f1"/>
+  
+  <rect x="60" y="410" width="90" height="6" fill="#e2e8f0"/>
+  <rect x="280" y="410" width="60" height="5" fill="#94a3b8"/>
+  <rect x="60" y="425" width="280" height="3" fill="#cbd5e1"/>
+  
+  <rect x="60" y="445" width="90" height="6" fill="#e2e8f0"/>
+  <rect x="280" y="445" width="60" height="5" fill="#94a3b8"/>
+  <rect x="60" y="460" width="280" height="3" fill="#cbd5e1"/>
+  
+  <!-- Footer accent -->
+  <rect x="50" y="495" width="80" height="8" fill="#6366f1"/>
+  <rect x="60" y="515" width="50" height="18" rx="9" fill="#312e81"/>
+  <rect x="120" y="515" width="50" height="18" rx="9" fill="#312e81"/>
+  <rect x="180" y="515" width="50" height="18" rx="9" fill="#312e81"/>
+</svg>

@@ -1,0 +1,5 @@
+# Base de datos JSON local
+users.json
+
+# Mantener el directorio
+!.gitkeep

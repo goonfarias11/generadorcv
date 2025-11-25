@@ -1,0 +1,9 @@
+# Vercel
+.vercel
+
+# Uploads (comprobantes de pago)
+public/uploads/receipts/*
+!public/uploads/receipts/.gitkeep
+
+# Data (base de datos local)
+data/users.json

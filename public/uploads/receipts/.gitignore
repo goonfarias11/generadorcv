@@ -1,0 +1,8 @@
+# Comprobantes de pago subidos por usuarios
+*.jpg
+*.jpeg
+*.png
+*.pdf
+
+# Mantener el directorio
+!.gitkeep

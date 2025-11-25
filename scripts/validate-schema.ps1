@@ -19,14 +19,14 @@ try {
     
     # Buscar script type="application/ld+json"
     $pattern = '<script type="application/ld\+json">(.*?)</script>'
-    $matches = [regex]::Matches($html, $pattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
+    $regexMatches = [regex]::Matches($html, $pattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
     
-    if ($matches.Count -eq 0) {
+    if ($regexMatches.Count -eq 0) {
         Write-Host "❌ No se encontró JSON-LD en la página" -ForegroundColor Red
         exit 1
     }
     
-    $jsonLd = $matches[0].Groups[1].Value.Trim()
+    $jsonLd = $regexMatches[0].Groups[1].Value.Trim()
     
     Write-Host "✅ JSON-LD encontrado:" -ForegroundColor Green
     Write-Host ($jsonLd.Substring(0, [Math]::Min(500, $jsonLd.Length)))

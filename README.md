@@ -60,6 +60,17 @@
 - **Memoización** con React.memo
 - **Optimización de imágenes** con Next.js Image
 
+### 🎨 UX Mejorada
+- **Animaciones fluidas** con framer-motion
+- **Autoguardado visual** con indicador en tiempo real
+- **Navegación lateral** con stepper de progreso
+- **Vista previa en vivo** con debouncing (200ms)
+- **Restauración de scroll** por sección
+- **Transiciones suaves** entre pasos
+- **ARIA labels** completos para accesibilidad
+- **Contraste WCAG 2.1 AA** en todos los elementos
+- **Loading states** mejorados para exportación
+
 ### 🔍 SEO
 - **Metadata dinámica** por página
 - **OG images** generados automáticamente
@@ -75,6 +86,7 @@
 - **React 18**
 - **Tailwind CSS**
 - **Zustand** (state management)
+- **Framer Motion** (animations)
 
 ### Backend
 - **Next.js API Routes**
@@ -621,6 +633,33 @@ Esto validará:
 - Puppeteer puede requerir dependencias adicionales en algunos sistemas operativos
 - El PDF se genera server-side para garantizar calidad profesional
 - Todas las plantillas están optimizadas para impresión en formato A4
+
+### Mejoras UX Implementadas
+
+**Componentes Creados:**
+- `AutosaveIndicator`: Indicador visual de guardado automático (bottom-right)
+- `StepperNavigation`: Navegación lateral con progreso visual
+- `useDebounce`: Hook para debouncing de 200ms en live preview
+- `useScrollRestoration`: Hook para restaurar scroll por sección
+
+**Características:**
+- Layout de 3 columnas: Stepper (lateral) + Formulario (centro) + Live Preview (derecha)
+- Animaciones con framer-motion en transiciones de pasos
+- Feedback visual de autoguardado: "Guardando..." → "Guardado ✓"
+- Vista previa actualizada en tiempo real con debouncing
+- Scroll restoration automático al cambiar de sección
+- ARIA labels completos en todos los elementos interactivos
+- Contraste mejorado (WCAG 2.1 AA): neutral-400 → neutral-600
+- Loading states mejorados en exportación de PDF
+- Sentry breadcrumbs en navegación y acciones críticas
+
+**Accesibilidad:**
+- ARIA labels en inputs, botones y regiones
+- Contraste mínimo 4.5:1 en texto
+- Estados de foco visibles
+- Navegación por teclado completa
+- Indicadores de paso actual (aria-current)
+- Mensajes de error con role="alert"
 
 ---
 

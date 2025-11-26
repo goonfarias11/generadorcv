@@ -50,7 +50,7 @@ export default function TemplateSelector() {
                 isActive
                   ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-glow ring-2 ring-primary-300 focus:ring-primary-500'
                   : isDisabled
-                  ? 'bg-neutral-100 text-neutral-400 border-2 border-neutral-200 cursor-not-allowed'
+                  ? 'bg-neutral-100 text-neutral-500 border-2 border-neutral-200 cursor-not-allowed'
                   : 'bg-white text-neutral-700 border-2 border-neutral-300 hover:border-primary-400 hover:shadow-md focus:ring-primary-500'
               }`}
               aria-label={`Plantilla ${template.name}`}
@@ -70,7 +70,7 @@ export default function TemplateSelector() {
         })}
       </div>
       <p className="text-[10px] md:text-xs text-neutral-600 mt-2 md:mt-3 flex items-center gap-1.5 md:gap-2">
-        <svg className="w-3 h-3 md:w-4 md:h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-3 h-3 md:w-4 md:h-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span className="truncate">{currentTemplate.description}</span>

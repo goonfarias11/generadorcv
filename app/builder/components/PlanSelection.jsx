@@ -225,7 +225,7 @@ export default function PlanSelection() {
           </div>
           <button
             onClick={() => setShowPayment(false)}
-            className="text-neutral-400 hover:text-neutral-600 transition-colors"
+            className="text-neutral-600 hover:text-neutral-800 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -524,7 +524,7 @@ export default function PlanSelection() {
               <svg className="w-4 h-4 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <span className="text-neutral-400">Con marca de agua</span>
+              <span className="text-neutral-600">Con marca de agua</span>
             </li>
           </ul>
 

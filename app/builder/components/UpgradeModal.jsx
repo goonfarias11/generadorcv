@@ -74,7 +74,7 @@ export default function UpgradeModal({ isOpen, onClose, featureName }) {
                 <span className="text-4xl font-bold text-neutral-900">$2000</span>
                 <span className="text-neutral-600 text-sm ml-1">ARS</span>
               </div>
-              <div className="text-neutral-400">o</div>
+              <div className="text-neutral-600">o</div>
               <div>
                 <span className="text-4xl font-bold text-neutral-900">$9.99</span>
                 <span className="text-neutral-600 text-sm ml-1">USD</span>

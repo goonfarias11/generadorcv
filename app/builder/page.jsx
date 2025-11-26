@@ -19,6 +19,7 @@ import AutosaveIndicator from './components/AutosaveIndicator'
 import StepperNavigation from './components/StepperNavigation'
 import { templates } from '@/lib/templates'
 import { addWatermarkIfNeeded } from '@/lib/watermark'
+import { generatePDFHTML } from '@/lib/pdf-optimizer'
 import { Eye } from 'lucide-react'
 import { captureException, addBreadcrumb } from '@/lib/sentry'
 
@@ -105,7 +106,8 @@ export default function BuilderPage() {
         ? resume 
         : { ...resume, coverLetter: '' }
       
-      let html = template.render(resumeToRender)
+      // Usar el optimizador de PDF para generar HTML mejorado
+      let html = generatePDFHTML(resumeToRender, template)
       html = addWatermarkIfNeeded(html, resume.plan, resume.subscriptionStatus)
       
       let endpoint = '/api/generate'

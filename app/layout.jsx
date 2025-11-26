@@ -123,13 +123,6 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://api.mercadopago.com" />
         <link rel="dns-prefetch" href="https://plausible.io" />
         
-        {/* Plausible Analytics - Privacy-friendly, no cookies */}
-        <script
-          defer
-          data-domain="generadorcv.online"
-          src="https://plausible.io/js/script.tagged-events.js"
-        />
-        
         {/* Trusted Types initialization - debe cargarse primero */}
         <script
           nonce={nonce}
@@ -182,6 +175,13 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.className} bg-neutral-50 antialiased`}>
         <main>{children}</main>
+        
+        {/* Plausible Analytics - Privacy-friendly, no cookies */}
+        <Script
+          defer
+          data-domain="generadorcv.online"
+          src="https://plausible.io/js/script.tagged-events.js"
+        />
         
         {/* PWA: Registrar Service Worker (solo en cliente) */}
         <Script

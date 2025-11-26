@@ -1,3 +1,5 @@
+const { withSentryConfig } = require('@sentry/nextjs');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -98,4 +100,36 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+// Configuración de Sentry para source maps y releases
+module.exports = withSentryConfig(
+  nextConfig,
+  {
+    // Sentry Webpack Plugin Options
+    
+    // Silenciar logs del plugin durante build (menos verbose)
+    silent: true,
+    
+    // Organización y proyecto de Sentry
+    org: process.env.SENTRY_ORG,
+    project: process.env.SENTRY_PROJECT,
+    
+    // Auth token para subir source maps
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+  },
+  {
+    // Sentry SDK Options
+    
+    // Subir source maps solo en producción
+    hideSourceMaps: true,
+    
+    // Deshabilitar el SDK del servidor en desarrollo
+    disableServerWebpackPlugin: process.env.NODE_ENV !== 'production',
+    disableClientWebpackPlugin: process.env.NODE_ENV !== 'production',
+    
+    // Automatizar instrumentación de funciones del servidor
+    autoInstrumentServerFunctions: true,
+    
+    // Incluir source maps en el bundle
+    widenClientFileUpload: true,
+  }
+);

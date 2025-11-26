@@ -19,7 +19,7 @@ export default function Footer() {
               </div>
               <h3 className="text-white font-display font-bold text-lg md:text-xl">GeneradorCV</h3>
             </div>
-            <p className="text-xs md:text-sm text-neutral-400 leading-relaxed pr-4">
+            <p className="text-xs md:text-sm text-neutral-300 leading-relaxed pr-4">
               Crea currículums profesionales en minutos
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function Footer() {
         
         {/* Bottom */}
         <div className="border-t border-neutral-800 pt-6 md:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs md:text-sm">
-          <p className="text-neutral-400 text-center sm:text-left">
+          <p className="text-neutral-300 text-center sm:text-left">
             © 2025 <span className="text-white font-semibold">GeneradorCV</span>. Todos los derechos reservados.
           </p>
           <button

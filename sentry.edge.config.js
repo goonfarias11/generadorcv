@@ -4,16 +4,14 @@ Sentry.init({
   dsn: process.env.SENTRY_DSN,
   
   // Performance Monitoring
-  tracesSampleRate: 0.05, // 5% de transacciones para no saturar
+  tracesSampleRate: 0.05,
   
   // Environment
   environment: process.env.VERCEL_ENV || process.env.NODE_ENV,
   
-  // Release tracking (usando Git SHA de Vercel)
+  // Release tracking
   release: process.env.SENTRY_RELEASE,
   
-  // Configuración específica del servidor
-  integrations: [
-    Sentry.httpIntegration(),
-  ],
+  // Session Tracking
+  autoSessionTracking: true,
 });

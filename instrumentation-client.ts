@@ -12,9 +12,6 @@ Sentry.init({
   // Release tracking (usando Git SHA de Vercel)
   release: process.env.SENTRY_RELEASE,
   
-  // Session Tracking
-  autoSessionTracking: true,
-  
   // Configuración específica del cliente
   integrations: [
     Sentry.browserTracingIntegration(),
@@ -28,3 +25,6 @@ Sentry.init({
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 1.0,
 });
+
+// Export navigation instrumentation hook
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

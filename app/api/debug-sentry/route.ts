@@ -12,6 +12,15 @@
  * TODO: Eliminar este archivo después de verificar Sentry
  */
 
+import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
+
 export function GET() {
-  throw new Error("Sentry test error - This is intentional for testing");
+  // Usar NextResponse para evitar prerender
+  if (Math.random() > -1) { // Siempre true, pero evita detección estática
+    throw new Error("Sentry test error - This is intentional for testing");
+  }
+  
+  return NextResponse.json({ error: "unreachable" });
 }

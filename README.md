@@ -622,6 +622,83 @@ Esto validará:
 - El PDF se genera server-side para garantizar calidad profesional
 - Todas las plantillas están optimizadas para impresión en formato A4
 
+---
+
+## 🔍 Monitoreo de Errores con Sentry
+
+Este proyecto utiliza **Sentry** para monitoreo de errores en producción.
+
+### Variables de Entorno Requeridas
+
+Configura las siguientes variables en tu proyecto de Vercel:
+
+```bash
+# Sentry DSN (Data Source Name)
+SENTRY_DSN=https://your-dsn@sentry.io/project-id
+
+# Token de autenticación para subir source maps
+SENTRY_AUTH_TOKEN=sntrys_your_auth_token_here
+
+# Organización de Sentry
+SENTRY_ORG=your-org-slug
+
+# Proyecto de Sentry
+SENTRY_PROJECT=your-project-name
+
+# Release tracking (automático en Vercel)
+SENTRY_RELEASE=$VERCEL_GIT_COMMIT_SHA
+```
+
+### Obtener Credenciales de Sentry
+
+1. **Crear cuenta en Sentry**: https://sentry.io/signup/
+2. **Crear nuevo proyecto**: Tipo "Next.js"
+3. **Obtener DSN**: Settings → Projects → [Tu Proyecto] → Client Keys (DSN)
+4. **Crear Auth Token**: Settings → Account → API → Auth Tokens → Create New Token
+   - Permisos: `project:releases`, `org:read`
+5. **Copiar slugs**: Settings → General → Organization Slug / Project Slug
+
+### Testing Local
+
+1. **Probar captura de errores**:
+   ```bash
+   # En desarrollo
+   npm run dev
+   
+   # Visitar: http://localhost:3000/api/debug-sentry
+   # Deberías ver un error en Sentry dashboard
+   ```
+
+2. **⚠️ IMPORTANTE**: Eliminar el endpoint de debug antes de producción:
+   ```bash
+   rm app/api/debug-sentry/route.ts
+   git commit -m "chore: remove debug endpoint"
+   ```
+
+### Ver Errores en Sentry
+
+1. Ir a https://sentry.io/organizations/[tu-org]/issues/
+2. Filtrar por proyecto
+3. Ver stack traces completos con source maps
+4. Analizar breadcrumbs de flujo de usuario
+5. Revisar contexto de errores (template, plan, etc.)
+
+### Eventos Rastreados
+
+- ✅ **Errores en exportación de PDF** (con contexto completo)
+- ✅ **Breadcrumbs de flujo de usuario** (clicks, acciones)
+- ✅ **Errores de API** (automático via Sentry SDK)
+- ✅ **Errores de cliente** (JavaScript exceptions)
+
+### Privacidad y Seguridad
+
+- Session replay **solo en errores** (no en todas las sesiones)
+- Texto y media **enmascarados** en replays
+- 5% de sampling en performance (reducir cuota)
+- Source maps **no expuestos** al cliente (hideSourceMaps: true)
+
+---
+
 ## 🤝 Contribuciones
 
 Este es un proyecto de demostración. Siéntete libre de adaptarlo a tus necesidades.

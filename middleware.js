@@ -35,6 +35,7 @@ export function middleware(req) {
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob:",
     "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live",
+    "worker-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",
     "frame-ancestors 'none'",

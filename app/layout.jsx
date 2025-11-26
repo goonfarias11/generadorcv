@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter, Lexend } from 'next/font/google'
 import { headers } from 'next/headers'
+import Script from 'next/script'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export const metadata = {
     "currículum online"
   ],
   authors: [{ name: "GeneradorCV" }],
+  manifest: "/manifest.json",
   alternates: {
     canonical: "https://generadorcv.online"
   },
@@ -161,9 +163,39 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* PWA: Íconos de aplicación */}
+        <link rel="icon" href="/icons/icon-192.png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        
+        {/* PWA: Theme color para Android */}
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <body className={`${inter.className} bg-neutral-50 antialiased`}>
         <main>{children}</main>
+        
+        {/* PWA: Registrar Service Worker (solo en cliente) */}
+        <Script
+          id="register-sw"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(
+                    function(registration) {
+                      console.log('[PWA] Service Worker registrado:', registration.scope);
+                    },
+                    function(error) {
+                      console.log('[PWA] Error al registrar Service Worker:', error);
+                    }
+                  );
+                });
+              }
+            `
+          }}
+        />
       </body>
     </html>
   )

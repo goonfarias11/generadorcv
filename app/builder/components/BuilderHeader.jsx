@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useResumeStore } from '@/store/resumeStore'
+import { trackEvent } from '@/lib/analytics'
 
 export default function BuilderHeader({ onReset, hasAutosave, onExport, isGenerating }) {
   const router = useRouter()
@@ -93,7 +94,10 @@ export default function BuilderHeader({ onReset, hasAutosave, onExport, isGenera
             )}
 
             <button
-              onClick={onExport}
+              onClick={() => {
+                trackEvent('descargar_pdf', { format: 'A4', template: resume.template || 'default' });
+                onExport();
+              }}
               disabled={isGenerating || !resume.name}
               className="btn-primary text-sm px-4 md:px-6 py-2 md:py-2.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >

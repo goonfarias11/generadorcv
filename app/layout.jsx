@@ -121,6 +121,14 @@ export default function RootLayout({ children }) {
         {/* DNS Prefetch para recursos de terceros */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://api.mercadopago.com" />
+        <link rel="dns-prefetch" href="https://plausible.io" />
+        
+        {/* Plausible Analytics - Privacy-friendly, no cookies */}
+        <script
+          defer
+          data-domain="generadorcv.online"
+          src="https://plausible.io/js/script.tagged-events.js"
+        />
         
         {/* Trusted Types initialization - debe cargarse primero */}
         <script

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { trackEvent } from '@/lib/analytics'
 
 export default function HeroSection() {
   const router = useRouter()
@@ -30,7 +31,10 @@ export default function HeroSection() {
         
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4 mb-6 md:mb-8">
           <button
-            onClick={() => router.push('/builder')}
+            onClick={() => {
+              trackEvent('cta_crear_cv', { position: 'landing_hero' });
+              router.push('/builder');
+            }}
             className="btn-primary text-sm md:text-base lg:text-lg px-6 md:px-8 py-3 md:py-3.5 shadow-glow flex items-center gap-2 justify-center"
           >
             <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

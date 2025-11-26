@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { trackEvent } from '@/lib/analytics'
 import Header from '@/components/home/Header'
 import Footer from '@/components/home/Footer'
 
@@ -124,7 +125,10 @@ export default function CrearCVPage() {
             Elige una plantilla, completa tus datos y descarga tu CV en PDF en minutos.
           </p>
           <button
-            onClick={() => router.push('/builder')}
+            onClick={() => {
+              trackEvent('cta_crear_cv', { position: 'hero' });
+              router.push('/builder');
+            }}
             className="btn-primary bg-white text-primary-600 hover:bg-neutral-100 px-8 py-4 text-lg font-semibold shadow-xl"
           >
             Crear CV Gratis Ahora

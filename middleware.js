@@ -30,11 +30,11 @@ export function middleware(req) {
   // unsafe-eval: necesario solo para Next.js HMR en desarrollo
   const cspHeader = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval'`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval' https://plausible.io`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: blob:",
-    "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live",
+    "img-src 'self' data: blob: https://plausible.io",
+    "connect-src 'self' https://api.mercadopago.com https://vercel.com https://vercel.live https://plausible.io",
     "worker-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",

@@ -50,9 +50,9 @@ export function middleware(req) {
   return response;
 }
 
-// Aplicar a todas las rutas excepto archivos estáticos
+// Aplicar a todas las rutas excepto archivos estáticos y API de generación PDF
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\..*|api/webhooks).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\..*|api/webhooks|api/generate).*)',
   ],
 };

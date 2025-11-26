@@ -5,8 +5,9 @@ import { templates } from '@/lib/templates'
 import { addWatermarkIfNeeded } from '@/lib/watermark'
 import { useEffect, useRef, useState, useMemo } from 'react'
 
-export default function ResumePreview() {
-  const { resume } = useResumeStore()
+export default function ResumePreview({ resume: externalResume }) {
+  const { resume: storeResume } = useResumeStore()
+  const resume = externalResume || storeResume
   const currentTemplate = templates[resume.template] || templates.ats
   const contentRef = useRef(null)
   const [totalPages, setTotalPages] = useState(1)

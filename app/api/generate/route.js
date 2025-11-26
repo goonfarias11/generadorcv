@@ -15,6 +15,9 @@ export async function POST(request) {
       )
     }
 
+    console.log('PDF Generation - HTML length:', html.length)
+    console.log('PDF Generation - HTML preview:', html.substring(0, 200))
+
     // Configuración optimizada de Chromium para Vercel
     const isProduction = process.env.NODE_ENV === 'production'
     
@@ -30,7 +33,7 @@ export async function POST(request) {
       defaultViewport: {
         width: 1920,
         height: 1080,
-        deviceScaleFactor: 2, // Para mejor calidad de PDF
+        deviceScaleFactor: 2,
       },
       executablePath: isProduction 
         ? await chromium.executablePath()
@@ -40,27 +43,31 @@ export async function POST(request) {
         ? '/usr/bin/google-chrome'
         : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       headless: chromium.headless || true,
-      timeout: 30000, // 30 segundos timeout
+      timeout: 60000, // Aumentar a 60 segundos
     }
     
+    console.log('Launching browser...')
     browser = await puppeteer.launch(launchOptions)
     const page = await browser.newPage()
     
-    // Configurar el HTML con wait mejorado
+    console.log('Setting content...')
+    // Configurar el HTML con wait más simple
     await page.setContent(html, {
-      waitUntil: ['networkidle0', 'domcontentloaded'],
-      timeout: 30000
+      waitUntil: 'domcontentloaded',
+      timeout: 60000
     })
     
-    // Esperar a que las imágenes carguen
+    console.log('Waiting for rendering...')
+    // Esperar a que las imágenes y fuentes carguen
     await page.evaluateHandle('document.fonts.ready')
-    await page.waitForTimeout(1000) // Dar tiempo adicional para renderizado
+    await page.waitForTimeout(2000) // Más tiempo para renderizado
     
+    console.log('Generating PDF...')
     // Generar PDF con configuración optimizada
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
-      preferCSSPageSize: true,
+      preferCSSPageSize: false, // Cambiar a false
       margin: {
         top: 0,
         right: 0,
@@ -68,9 +75,10 @@ export async function POST(request) {
         left: 0
       },
       displayHeaderFooter: false,
-      scale: 1, // Escala 1:1 para precisión
+      scale: 1,
     })
 
+    console.log('PDF generated, size:', pdf.length)
     await browser.close()
     browser = null
 

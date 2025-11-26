@@ -110,22 +110,36 @@ export default function BuilderPage() {
       let html = generatePDFHTML(resumeToRender, template)
       html = addWatermarkIfNeeded(html, resume.plan, resume.subscriptionStatus)
       
+      console.log('=== PDF EXPORT DEBUG ===')
+      console.log('HTML length:', html.length)
+      console.log('HTML starts with:', html.substring(0, 150))
+      console.log('Has DOCTYPE:', html.includes('<!DOCTYPE'))
+      console.log('Has img tag:', html.includes('<img'))
+      
       let endpoint = '/api/generate'
       let filename = `CV-${resume.name || 'curriculum'}.pdf`
       let body = { html }
       
+      console.log('Sending request to:', endpoint)
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       })
 
+      console.log('Response status:', response.status)
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+
       if (response.status === 403) {
         alert('Este formato requiere el Plan Profesional.')
         return
       }
 
-      if (!response.ok) throw new Error('Error al generar PDF')
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error response:', errorData)
+        throw new Error(errorData.error || 'Error al generar PDF')
+      }
 
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)

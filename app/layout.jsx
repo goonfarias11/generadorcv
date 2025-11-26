@@ -15,32 +15,61 @@ const lexend = Lexend({
 })
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://generador-cv.vercel.app'),
+  metadataBase: new URL("https://generadorcv.online"),
   title: {
-    template: '%s | Generador de CV',
-    default: 'Generador de CV Profesional | Crea tu currículum en minutos',
+    default: "GeneradorCV – Crea tu CV profesional en minutos",
+    template: "%s | GeneradorCV"
   },
-  description: 'Crea tu CV profesional gratis con 8 plantillas modernas. Exporta a PDF, obtén score inteligente y optimiza tu currículum con IA. Compatible con ATS.',
-  keywords: ['generador cv', 'curriculum vitae', 'cv gratis', 'plantillas cv', 'cv profesional', 'cv ats', 'resume builder', 'crear cv', 'currículum online'],
-  authors: [{ name: 'Generador CV' }],
+  description: "Crea tu CV profesional en minutos con plantillas modernas, exportación a PDF y un editor fácil de usar.",
+  keywords: [
+    "crear CV",
+    "generar CV",
+    "curriculum vitae",
+    "plantillas de CV",
+    "CV profesional",
+    "hacer currículum online",
+    "cv gratis",
+    "cv ats",
+    "resume builder",
+    "currículum online"
+  ],
+  authors: [{ name: "GeneradorCV" }],
+  alternates: {
+    canonical: "https://generadorcv.online"
+  },
   openGraph: {
-    type: 'website',
-    locale: 'es_ES',
-    siteName: 'Generador de CV Profesional',
-    title: 'Generador de CV Profesional',
-    description: 'Crea tu CV profesional gratis con 8 plantillas modernas.',
-    images: ['/opengraph-image'],
+    title: "GeneradorCV – Crea tu CV profesional en minutos",
+    description: "Crea tu CV profesional en minutos con plantillas modernas, exportación a PDF y un editor fácil de usar.",
+    url: "https://generadorcv.online",
+    siteName: "GeneradorCV",
+    type: "website",
+    locale: "es_ES",
+    images: [
+      {
+        url: "https://generadorcv.online/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "GeneradorCV - Crea tu CV profesional en minutos"
+      }
+    ]
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Generador de CV Profesional',
-    description: 'Crea tu CV profesional gratis con 8 plantillas modernas.',
-    images: ['/opengraph-image'],
+    card: "summary_large_image",
+    title: "GeneradorCV – Crea tu CV profesional en minutos",
+    description: "Crea tu CV profesional en minutos con plantillas modernas, exportación a PDF y un editor fácil de usar.",
+    images: ["https://generadorcv.online/og-image.png"]
   },
   robots: {
     index: true,
     follow: true,
-  },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1
+    }
+  }
 }
 
 export default function RootLayout({ children }) {
@@ -52,10 +81,10 @@ export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Generador de CV Profesional",
+    "name": "GeneradorCV",
     "applicationCategory": "BusinessApplication",
-    "description": "Crea tu CV profesional gratis con 8 plantillas modernas. Exporta a PDF, obtén score inteligente y optimiza tu currículum con IA.",
-    "url": process.env.NEXT_PUBLIC_BASE_URL || "https://generador-cv.vercel.app",
+    "description": "Crea tu CV profesional en minutos con plantillas modernas, exportación a PDF y un editor fácil de usar.",
+    "url": "https://generadorcv.online",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -71,8 +100,8 @@ export default function RootLayout({ children }) {
     },
     "author": {
       "@type": "Organization",
-      "name": "Generador CV",
-      "url": process.env.NEXT_PUBLIC_BASE_URL || "https://generador-cv.vercel.app"
+      "name": "GeneradorCV",
+      "url": "https://generadorcv.online"
     }
   };
 

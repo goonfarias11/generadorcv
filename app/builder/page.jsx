@@ -15,6 +15,7 @@ import BuilderHeader from './components/BuilderHeader'
 import { templates } from '@/lib/templates'
 import { addWatermarkIfNeeded } from '@/lib/watermark'
 import { Eye } from 'lucide-react'
+import { captureException, addBreadcrumb } from '@/lib/sentry'
 
 // Dynamic imports para componentes grandes (code splitting)
 const ResumePreview = dynamic(() => import('./components/ResumePreview'), {
@@ -61,6 +62,19 @@ export default function BuilderPage() {
     setShowExportMenu(false)
     
     try {
+      // Breadcrumb para tracking de flujo
+      addBreadcrumb({
+        category: 'user_action',
+        message: 'User initiated PDF export',
+        level: 'info',
+        data: { 
+          format,
+          template: resume.template,
+          isProfessional,
+          hasName: !!resume.name
+        }
+      });
+
       const template = templates[resume.template] || templates.ats
       const resumeToRender = isProfessional 
         ? resume 
@@ -95,8 +109,28 @@ export default function BuilderPage() {
       a.click()
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
+
+      // Breadcrumb de éxito
+      addBreadcrumb({
+        category: 'export',
+        message: 'PDF exported successfully',
+        level: 'info',
+        data: { filename, format }
+      });
+
     } catch (error) {
       console.error('Error:', error)
+      
+      // Capturar error en Sentry con contexto completo
+      captureException(error, {
+        step: 'export_pdf',
+        format,
+        template: resume.template,
+        isProfessional,
+        hasName: !!resume.name,
+        endpoint: '/api/generate'
+      });
+
       alert('Hubo un error. Por favor, intenta de nuevo.')
     } finally {
       setIsGenerating(false)

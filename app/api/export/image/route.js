@@ -32,10 +32,3 @@ export async function POST(request) {
     )
   }
 }
-    console.error('Error generating image:', error)
-    return NextResponse.json(
-      { error: 'Error generating image', details: error.message },
-      { status: 500 }
-    )
-  }
-}

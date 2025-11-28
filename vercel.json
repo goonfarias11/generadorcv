@@ -3,8 +3,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "env": {
-    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
-    "AWS_LAMBDA_FUNCTION_NAME": "true"
+    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
   },
   "functions": {
     "app/api/generate/route.js": {

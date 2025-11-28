@@ -95,8 +95,16 @@ export default function BuilderHeader({ onReset, hasAutosave, onExport, isGenera
 
             <button
               onClick={() => {
-                trackEvent('descargar_pdf', { format: 'A4', template: resume.template || 'default' });
-                onExport();
+                try {
+                  console.log('=== EXPORTAR PDF CLICKED ===')
+                  console.log('Resume name:', resume?.name)
+                  console.log('isGenerating:', isGenerating)
+                  trackEvent('descargar_pdf', { format: 'A4', template: resume.template || 'default' });
+                  onExport();
+                } catch (error) {
+                  console.error('Error in export button click:', error)
+                  alert('Error al iniciar exportación: ' + error.message)
+                }
               }}
               disabled={isGenerating || !resume.name}
               className="btn-primary text-sm px-4 md:px-6 py-2 md:py-2.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 relative overflow-hidden transition-all"

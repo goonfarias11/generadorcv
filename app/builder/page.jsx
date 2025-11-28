@@ -136,9 +136,20 @@ export default function BuilderPage() {
       }
 
       if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Error response:', errorData)
-        throw new Error(errorData.error || 'Error al generar PDF')
+        const errorText = await response.text()
+        let errorData
+        try {
+          errorData = JSON.parse(errorText)
+        } catch {
+          errorData = { error: 'Error parsing response', rawError: errorText }
+        }
+        console.error('=== SERVER ERROR ===')
+        console.error('Status:', response.status)
+        console.error('Error data:', errorData)
+        console.error('Error details:', errorData.details)
+        console.error('Error name:', errorData.errorName)
+        console.error('Error code:', errorData.errorCode)
+        throw new Error(errorData.details || errorData.error || 'Error al generar PDF')
       }
 
       const blob = await response.blob()

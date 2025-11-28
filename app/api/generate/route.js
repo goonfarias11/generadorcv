@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server'
-import puppeteer from 'puppeteer-core'
-import chromium from '@sparticuz/chromium'
 
+// NOTA: Esta ruta ahora simplemente valida el HTML
+// La generación del PDF se hace en el cliente usando window.print()
 export async function POST(request) {
-  let browser = null
-  
   try {
     const { html } = await request.json()
 
@@ -15,88 +13,26 @@ export async function POST(request) {
       )
     }
 
-    console.log('PDF Generation - HTML length:', html.length)
-    console.log('PDF Generation - HTML preview:', html.substring(0, 200))
+    console.log('PDF validation - HTML length:', html.length)
 
-    // Configuración optimizada de Chromium para Vercel
-    const isProduction = process.env.NODE_ENV === 'production'
-    
-    console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV })
-    
-    const launchOptions = {
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    }
-    
-    console.log('Launching browser...')
-    browser = await puppeteer.launch(launchOptions)
-    const page = await browser.newPage()
-    
-    console.log('Setting content...')
-    // Configurar el HTML
-    await page.setContent(html, {
-      waitUntil: 'networkidle0',
-      timeout: 30000
-    })
-    
-    console.log('Generating PDF...')
-    // Generar PDF con configuración optimizada
-    const pdf = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      preferCSSPageSize: false, // Cambiar a false
-      margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0
+    // Simplemente devolver éxito
+    // El cliente manejará la generación del PDF
+    return NextResponse.json(
+      { 
+        success: true,
+        message: 'HTML validated successfully. Use client-side PDF generation.'
       },
-      displayHeaderFooter: false,
-      scale: 1,
-    })
-
-    console.log('PDF generated, size:', pdf.length)
-    await browser.close()
-    browser = null
-
-    // Devolver el PDF
-    return new NextResponse(pdf, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=curriculum.pdf',
-        'Content-Length': pdf.length.toString(),
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-      }
-    })
+      { status: 200 }
+    )
 
   } catch (error) {
-    console.error('=== ERROR GENERATING PDF ===')
-    console.error('Error name:', error.name)
-    console.error('Error message:', error.message)
-    console.error('Error stack:', error.stack)
-    console.error('Error code:', error.code)
-    
-    // Asegurar que el browser se cierre en caso de error
-    if (browser) {
-      try {
-        await browser.close()
-        console.log('Browser closed after error')
-      } catch (closeError) {
-        console.error('Error closing browser:', closeError)
-      }
-    }
+    console.error('=== ERROR VALIDATING HTML ===')
+    console.error('Error:', error.message)
     
     return NextResponse.json(
       { 
-        error: 'Error generating PDF', 
-        details: error.message,
-        errorName: error.name,
-        errorCode: error.code,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        error: 'Error validating HTML', 
+        details: error.message
       },
       { status: 500 }
     )

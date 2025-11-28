@@ -106,68 +106,44 @@ export default function BuilderPage() {
         ? resume 
         : { ...resume, coverLetter: '' }
       
-      // Usar el optimizador de PDF para generar HTML mejorado
+      // Generar HTML optimizado para impresión
       let html = generatePDFHTML(resumeToRender, template)
       html = addWatermarkIfNeeded(html, resume.plan, resume.subscriptionStatus)
       
-      console.log('=== PDF EXPORT DEBUG ===')
+      console.log('=== PDF EXPORT (CLIENT-SIDE) ===')
       console.log('HTML length:', html.length)
-      console.log('HTML starts with:', html.substring(0, 150))
-      console.log('Has DOCTYPE:', html.includes('<!DOCTYPE'))
-      console.log('Has img tag:', html.includes('<img'))
+      console.log('Template:', resume.template)
       
-      let endpoint = '/api/generate'
-      let filename = `CV-${resume.name || 'curriculum'}.pdf`
-      let body = { html }
+      // Crear ventana temporal para impresión
+      const printWindow = window.open('', '_blank')
+      printWindow.document.write(html)
+      printWindow.document.close()
       
-      console.log('Sending request to:', endpoint)
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      })
-
-      console.log('Response status:', response.status)
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
-
-      if (response.status === 403) {
-        alert('Este formato requiere el Plan Profesional.')
-        return
-      }
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        let errorData
-        try {
-          errorData = JSON.parse(errorText)
-        } catch {
-          errorData = { error: 'Error parsing response', rawError: errorText }
+      // Esperar a que se carguen las imágenes
+      await new Promise(resolve => {
+        if (printWindow.document.readyState === 'complete') {
+          resolve()
+        } else {
+          printWindow.addEventListener('load', resolve)
         }
-        console.error('=== SERVER ERROR ===')
-        console.error('Status:', response.status)
-        console.error('Error data:', errorData)
-        console.error('Error details:', errorData.details)
-        console.error('Error name:', errorData.errorName)
-        console.error('Error code:', errorData.errorCode)
-        throw new Error(errorData.details || errorData.error || 'Error al generar PDF')
-      }
-
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
+      })
+      
+      // Pequeña pausa adicional para asegurar renderizado
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      // Activar el diálogo de impresión
+      printWindow.print()
+      
+      // Cerrar ventana después de imprimir/cancelar
+      // (el usuario debe guardar como PDF manualmente)
+      setTimeout(() => printWindow.close(), 100)
 
       // Breadcrumb de éxito
       addBreadcrumb({
         category: 'export',
-        message: 'PDF exported successfully',
+        message: 'PDF print dialog opened',
         level: 'info',
-        data: { filename, format }
+        data: { format }
       });
 
     } catch (error) {

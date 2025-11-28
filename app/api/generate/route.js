@@ -21,32 +21,38 @@ export async function POST(request) {
     // Configuración optimizada de Chromium para Vercel
     const isProduction = process.env.NODE_ENV === 'production'
     
+    console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV })
+    
+    // Configurar args de chromium
+    const chromiumArgs = [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--single-process',
+      '--no-zygote',
+      '--disable-dev-tools',
+    ]
+    
     const launchOptions = {
-      args: isProduction ? chromium.args : [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-software-rasterizer',
-        '--disable-dev-tools',
-      ],
+      args: isProduction ? [...chromium.args, ...chromiumArgs] : chromiumArgs,
       defaultViewport: {
         width: 1920,
         height: 1080,
         deviceScaleFactor: 2,
       },
       executablePath: isProduction 
-        ? await chromium.executablePath()
+        ? await chromium.executablePath('/tmp')  // CLAVE: Especificar /tmp para Vercel
         : process.platform === 'win32'
         ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
         : process.platform === 'linux'
         ? '/usr/bin/google-chrome'
         : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       headless: chromium.headless || true,
-      timeout: 60000, // Aumentar a 60 segundos
+      timeout: 30000, // Reducir timeout
     }
     
-    console.log('Launching browser...')
+    console.log('Launching browser with executablePath:', launchOptions.executablePath)
     browser = await puppeteer.launch(launchOptions)
     const page = await browser.newPage()
     

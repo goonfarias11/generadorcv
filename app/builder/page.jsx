@@ -114,29 +114,33 @@ export default function BuilderPage() {
       console.log('HTML length:', html.length)
       console.log('Template:', resume.template)
       
-      // Crear ventana temporal para impresión
-      const printWindow = window.open('', '_blank')
-      printWindow.document.write(html)
-      printWindow.document.close()
+      // Crear Blob con el HTML
+      const blob = new Blob([html], { type: 'text/html' })
+      const url = URL.createObjectURL(blob)
       
-      // Esperar a que se carguen las imágenes
+      // Abrir en nueva ventana usando Blob URL (evita TrustedHTML)
+      const printWindow = window.open(url, '_blank')
+      
+      if (!printWindow) {
+        alert('Por favor permite las ventanas emergentes para exportar el PDF')
+        return
+      }
+      
+      // Esperar a que se cargue la ventana
       await new Promise(resolve => {
-        if (printWindow.document.readyState === 'complete') {
-          resolve()
-        } else {
-          printWindow.addEventListener('load', resolve)
-        }
+        printWindow.addEventListener('load', () => {
+          setTimeout(resolve, 500) // Pausa para asegurar renderizado completo
+        })
       })
-      
-      // Pequeña pausa adicional para asegurar renderizado
-      await new Promise(resolve => setTimeout(resolve, 500))
       
       // Activar el diálogo de impresión
       printWindow.print()
       
-      // Cerrar ventana después de imprimir/cancelar
-      // (el usuario debe guardar como PDF manualmente)
-      setTimeout(() => printWindow.close(), 100)
+      // Limpiar blob URL después de un tiempo
+      setTimeout(() => {
+        URL.revokeObjectURL(url)
+        printWindow.close()
+      }, 1000)
 
       // Breadcrumb de éxito
       addBreadcrumb({

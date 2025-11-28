@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 
+// Configurar chromium para optimizar en Vercel
+chromium.setGraphicsMode = false
+chromium.setHeadlessMode = true
+
 export async function POST(request) {
   let browser = null
   
@@ -23,50 +27,40 @@ export async function POST(request) {
     
     console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV })
     
-    // Configurar args de chromium
-    const chromiumArgs = [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--single-process',
-      '--no-zygote',
-      '--disable-dev-tools',
-    ]
+    let executablePath
     
-    const launchOptions = {
-      args: isProduction ? [...chromium.args, ...chromiumArgs] : chromiumArgs,
-      defaultViewport: {
-        width: 1920,
-        height: 1080,
-        deviceScaleFactor: 2,
-      },
-      executablePath: isProduction 
-        ? await chromium.executablePath('/tmp')  // CLAVE: Especificar /tmp para Vercel
-        : process.platform === 'win32'
+    if (isProduction) {
+      // En producción (Vercel), usar chromium de @sparticuz
+      executablePath = await chromium.executablePath()
+      console.log('Using Sparticuz Chromium:', executablePath)
+    } else {
+      // En desarrollo local
+      executablePath = process.platform === 'win32'
         ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
         : process.platform === 'linux'
         ? '/usr/bin/google-chrome'
-        : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      headless: chromium.headless || true,
-      timeout: 30000, // Reducir timeout
+        : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+      console.log('Using local Chrome:', executablePath)
     }
     
-    console.log('Launching browser with executablePath:', launchOptions.executablePath)
+    const launchOptions = {
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    }
+    
+    console.log('Launching browser...')
     browser = await puppeteer.launch(launchOptions)
     const page = await browser.newPage()
     
     console.log('Setting content...')
-    // Configurar el HTML con wait más simple
+    // Configurar el HTML
     await page.setContent(html, {
-      waitUntil: 'domcontentloaded',
-      timeout: 30000 // Reducir a 30 segundos
+      waitUntil: 'networkidle0',
+      timeout: 30000
     })
-    
-    console.log('Waiting for rendering...')
-    // Esperar a que las imágenes y fuentes carguen
-    await page.evaluateHandle('document.fonts.ready')
-    await page.waitForTimeout(500) // Reducir a 500ms para evitar timeouts en Vercel
     
     console.log('Generating PDF...')
     // Generar PDF con configuración optimizada

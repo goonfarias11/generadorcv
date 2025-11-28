@@ -160,7 +160,10 @@ export default function BuilderPage() {
       });
 
     } catch (error) {
-      console.error('Error:', error)
+      console.error('=== ERROR COMPLETO ===')
+      console.error('Error object:', error)
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
       
       // Capturar error en Sentry con contexto completo
       captureException(error, {
@@ -169,10 +172,13 @@ export default function BuilderPage() {
         template: resume.template,
         isProfessional,
         hasName: !!resume.name,
-        endpoint: '/api/generate'
+        endpoint: '/api/generate',
+        errorMessage: error.message
       });
 
-      alert('Hubo un error. Por favor, intenta de nuevo.')
+      // Mensaje de error más específico
+      const errorMsg = error.message || 'Error desconocido'
+      alert(`Error al generar PDF: ${errorMsg}\n\nRevisa la consola (F12) para más detalles.`)
     } finally {
       setIsGenerating(false)
     }

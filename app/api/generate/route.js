@@ -54,13 +54,13 @@ export async function POST(request) {
     // Configurar el HTML con wait más simple
     await page.setContent(html, {
       waitUntil: 'domcontentloaded',
-      timeout: 60000
+      timeout: 30000 // Reducir a 30 segundos
     })
     
     console.log('Waiting for rendering...')
     // Esperar a que las imágenes y fuentes carguen
     await page.evaluateHandle('document.fonts.ready')
-    await page.waitForTimeout(2000) // Más tiempo para renderizado
+    await page.waitForTimeout(500) // Reducir a 500ms para evitar timeouts en Vercel
     
     console.log('Generating PDF...')
     // Generar PDF con configuración optimizada
@@ -94,12 +94,17 @@ export async function POST(request) {
     })
 
   } catch (error) {
-    console.error('Error generating PDF:', error)
+    console.error('=== ERROR GENERATING PDF ===')
+    console.error('Error name:', error.name)
+    console.error('Error message:', error.message)
+    console.error('Error stack:', error.stack)
+    console.error('Error code:', error.code)
     
     // Asegurar que el browser se cierre en caso de error
     if (browser) {
       try {
         await browser.close()
+        console.log('Browser closed after error')
       } catch (closeError) {
         console.error('Error closing browser:', closeError)
       }
@@ -109,6 +114,8 @@ export async function POST(request) {
       { 
         error: 'Error generating PDF', 
         details: error.message,
+        errorName: error.name,
+        errorCode: error.code,
         stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
       { status: 500 }

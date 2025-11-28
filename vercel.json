@@ -4,5 +4,11 @@
   "trailingSlash": false,
   "env": {
     "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
+  },
+  "functions": {
+    "app/api/generate/route.js": {
+      "maxDuration": 60,
+      "memory": 3008
+    }
   }
 }

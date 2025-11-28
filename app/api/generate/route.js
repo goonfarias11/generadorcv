@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import chrome from 'chrome-aws-lambda'
+import puppeteer from 'puppeteer-core'
+import chromium from '@sparticuz/chromium'
 
 export async function POST(request) {
   let browser = null
@@ -17,21 +18,21 @@ export async function POST(request) {
     console.log('PDF Generation - HTML length:', html.length)
     console.log('PDF Generation - HTML preview:', html.substring(0, 200))
 
-    // Configuración optimizada de Chrome para Vercel
+    // Configuración optimizada de Chromium para Vercel
     const isProduction = process.env.NODE_ENV === 'production'
     
     console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV })
     
     const launchOptions = {
-      args: chrome.args,
-      defaultViewport: chrome.defaultViewport,
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless,
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
       ignoreHTTPSErrors: true,
     }
     
     console.log('Launching browser...')
-    browser = await chrome.puppeteer.launch(launchOptions)
+    browser = await puppeteer.launch(launchOptions)
     const page = await browser.newPage()
     
     console.log('Setting content...')

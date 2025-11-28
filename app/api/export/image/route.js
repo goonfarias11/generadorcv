@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import chrome from 'chrome-aws-lambda'
+import puppeteer from 'puppeteer-core'
+import chromium from '@sparticuz/chromium'
 import { templates } from '@/lib/templates'
 
 export async function POST(request) {
@@ -51,14 +52,14 @@ export async function POST(request) {
       </html>
     `
 
-    // Configuración de Chrome para Vercel
+    // Configuración de Chromium para Vercel
     const isProduction = process.env.NODE_ENV === 'production'
     
-    const browser = await chrome.puppeteer.launch({
-      args: chrome.args,
-      defaultViewport: chrome.defaultViewport,
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless,
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     })
 
     const page = await browser.newPage()

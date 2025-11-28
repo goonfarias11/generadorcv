@@ -2,10 +2,6 @@ import { NextResponse } from 'next/server'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 
-// Configurar chromium para optimizar en Vercel
-chromium.setGraphicsMode = false
-chromium.setHeadlessMode = true
-
 export async function POST(request) {
   let browser = null
   

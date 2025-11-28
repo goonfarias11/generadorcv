@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import puppeteer from 'puppeteer-core'
-import chromium from '@sparticuz/chromium-min'
+import chrome from 'chrome-aws-lambda'
 
 export async function POST(request) {
   let browser = null
@@ -18,37 +17,21 @@ export async function POST(request) {
     console.log('PDF Generation - HTML length:', html.length)
     console.log('PDF Generation - HTML preview:', html.substring(0, 200))
 
-    // Configuración optimizada de Chromium para Vercel
+    // Configuración optimizada de Chrome para Vercel
     const isProduction = process.env.NODE_ENV === 'production'
     
     console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV })
     
-    let executablePath
-    
-    if (isProduction) {
-      // En producción (Vercel), usar chromium de @sparticuz
-      executablePath = await chromium.executablePath()
-      console.log('Using Sparticuz Chromium:', executablePath)
-    } else {
-      // En desarrollo local
-      executablePath = process.platform === 'win32'
-        ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-        : process.platform === 'linux'
-        ? '/usr/bin/google-chrome'
-        : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-      console.log('Using local Chrome:', executablePath)
-    }
-    
     const launchOptions = {
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath,
-      headless: chromium.headless,
+      args: chrome.args,
+      defaultViewport: chrome.defaultViewport,
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless,
       ignoreHTTPSErrors: true,
     }
     
     console.log('Launching browser...')
-    browser = await puppeteer.launch(launchOptions)
+    browser = await chrome.puppeteer.launch(launchOptions)
     const page = await browser.newPage()
     
     console.log('Setting content...')

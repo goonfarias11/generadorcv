@@ -175,6 +175,12 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <body className={`${inter.className} bg-neutral-50 antialiased`}>
+        {/* Suprimir errores de React del toolbar de Vercel */}
+        <Script
+          src="/suppress-errors.js"
+          strategy="beforeInteractive"
+        />
+        
         <main>{children}</main>
         
         {/* Plausible Analytics - Privacy-friendly, no cookies */}

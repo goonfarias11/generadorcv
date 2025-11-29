@@ -3,6 +3,7 @@
 import { useResumeStore } from '@/store/resumeStore'
 import { templates } from '@/lib/templates'
 import { addWatermarkIfNeeded } from '@/lib/watermark'
+import { wrapTemplateForPDF } from '@/lib/pdf-optimizer'
 import { useEffect, useRef, useState, useMemo } from 'react'
 
 export default function ResumePreview({ resume: externalResume }) {
@@ -14,14 +15,22 @@ export default function ResumePreview({ resume: externalResume }) {
   
   const isProfessional = resume.subscriptionStatus === 'active'
 
-  // Memoizar el HTML renderizado para evitar cálculos innecesarios
+  // Memoizar el HTML renderizado - IGUAL QUE EN EL PDF
   const renderedContent = useMemo(() => {
     const resumeToRender = isProfessional 
       ? resume 
       : { ...resume, coverLetter: '' }
     
-    const renderedHTML = currentTemplate.render(resumeToRender)
-    return addWatermarkIfNeeded(renderedHTML, resume.plan)
+    // Renderizar plantilla
+    let html = currentTemplate.render(resumeToRender)
+    
+    // Agregar marca de agua si es necesario
+    html = addWatermarkIfNeeded(html, resume.plan)
+    
+    // Envolver con los mismos estilos del PDF
+    html = wrapTemplateForPDF(html, currentTemplate.name)
+    
+    return html
   }, [resume, currentTemplate, isProfessional])
 
   useEffect(() => {
@@ -35,10 +44,10 @@ export default function ResumePreview({ resume: externalResume }) {
 
   return (
     <div className="bg-white rounded-xl md:rounded-2xl shadow-2xl border-2 border-neutral-200 overflow-hidden flex flex-col max-h-[80vh]">
-      {/* Vista previa del CV - UN SOLO RENDER */}
+      {/* Vista previa del CV - RENDERIZADO COMPLETO COMO PDF */}
       <div className="flex-1 bg-gradient-to-br from-neutral-100 via-neutral-50 to-neutral-100 overflow-y-auto custom-scrollbar">
         <div className="p-2 md:p-4 lg:p-6">
-          {/* Hoja A4 con sombra realista - ULTRA RESPONSIVE */}
+          {/* Iframe para renderizar el HTML completo con sus estilos */}
           <div
             ref={contentRef}
             className="bg-white mx-auto transition-all duration-300"
@@ -52,43 +61,20 @@ export default function ResumePreview({ resume: externalResume }) {
               position: 'relative'
             }}
           >
-            {/* Efecto de papel */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-              background: 'linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.02) 100%)'
-            }}></div>
-            
-            <div
-              className="relative z-10 resume-preview-content"
-              dangerouslySetInnerHTML={{ __html: renderedContent }}
+            <iframe
+              srcDoc={renderedContent}
+              style={{
+                width: '100%',
+                minHeight: '842px',
+                border: 'none',
+                display: 'block',
+                background: 'white'
+              }}
+              title="Vista previa del CV"
             />
           </div>
         </div>
       </div>
-      
-      <style jsx global>{`
-        .resume-preview-content {
-          font-size: 14px;
-          line-height: 1.6;
-          color: #333;
-        }
-        
-        .resume-preview-content h1,
-        .resume-preview-content h2,
-        .resume-preview-content h3,
-        .resume-preview-content h4 {
-          margin-top: 0;
-          line-height: 1.3;
-        }
-        
-        .resume-preview-content p {
-          margin: 0;
-        }
-        
-        .resume-preview-content img {
-          max-width: 100%;
-          height: auto;
-        }
-      `}</style>
     </div>
   )
 }

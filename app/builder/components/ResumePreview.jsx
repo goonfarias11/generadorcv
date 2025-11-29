@@ -28,8 +28,8 @@ export default function ResumePreview({ resume: externalResume }) {
     // Agregar marca de agua si es necesario
     html = addWatermarkIfNeeded(html, resume.plan)
     
-    // Envolver con los mismos estilos del PDF
-    html = wrapTemplateForPDF(html, currentTemplate.name)
+    // Envolver con los mismos estilos del PDF (con zoom para preview)
+    html = wrapTemplateForPDF(html, currentTemplate.name, true)
     
     return html
   }, [resume, currentTemplate, isProfessional])

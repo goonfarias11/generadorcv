@@ -11,6 +11,7 @@ export default function ResumePreview({ resume: externalResume }) {
   const resume = externalResume || storeResume
   const currentTemplate = templates[resume.template] || templates.ats
   const contentRef = useRef(null)
+  const iframeRef = useRef(null)
   const [totalPages, setTotalPages] = useState(1)
   
   const isProfessional = resume.subscriptionStatus === 'active'
@@ -34,6 +35,34 @@ export default function ResumePreview({ resume: externalResume }) {
   }, [resume, currentTemplate, isProfessional])
 
   useEffect(() => {
+    if (iframeRef.current) {
+      const iframe = iframeRef.current
+      const adjustHeight = () => {
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
+          if (iframeDoc && iframeDoc.body) {
+            const height = Math.max(
+              iframeDoc.body.scrollHeight,
+              iframeDoc.documentElement.scrollHeight,
+              842 // Mínimo A4
+            )
+            iframe.style.height = `${height}px`
+          }
+        } catch (e) {
+          console.error('Error adjusting iframe height:', e)
+        }
+      }
+      
+      iframe.addEventListener('load', adjustHeight)
+      // Ajustar también después de un pequeño delay por si las imágenes cargan
+      setTimeout(adjustHeight, 100)
+      setTimeout(adjustHeight, 500)
+      
+      return () => iframe.removeEventListener('load', adjustHeight)
+    }
+  }, [renderedContent])
+
+  useEffect(() => {
     if (contentRef.current) {
       const contentHeight = contentRef.current.scrollHeight
       const pageHeight = 842 // Altura A4 ajustada
@@ -54,7 +83,6 @@ export default function ResumePreview({ resume: externalResume }) {
             style={{
               width: '100%',
               maxWidth: '595px',
-              minHeight: '842px',
               boxShadow: '0 10px 40px -5px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)',
               borderRadius: '4px',
               overflow: 'hidden',
@@ -62,6 +90,7 @@ export default function ResumePreview({ resume: externalResume }) {
             }}
           >
             <iframe
+              ref={iframeRef}
               srcDoc={renderedContent}
               style={{
                 width: '100%',

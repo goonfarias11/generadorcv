@@ -58,12 +58,37 @@ export default function ResumePreview({ resume: externalResume }) {
             }}></div>
             
             <div
-              className="relative z-10"
+              className="relative z-10 resume-preview-content"
               dangerouslySetInnerHTML={{ __html: renderedContent }}
             />
           </div>
         </div>
       </div>
+      
+      <style jsx global>{`
+        .resume-preview-content {
+          font-size: 14px;
+          line-height: 1.6;
+          color: #333;
+        }
+        
+        .resume-preview-content h1,
+        .resume-preview-content h2,
+        .resume-preview-content h3,
+        .resume-preview-content h4 {
+          margin-top: 0;
+          line-height: 1.3;
+        }
+        
+        .resume-preview-content p {
+          margin: 0;
+        }
+        
+        .resume-preview-content img {
+          max-width: 100%;
+          height: auto;
+        }
+      `}</style>
     </div>
   )
 }

@@ -2,11 +2,14 @@
 
 import { useResumeStore } from '@/store/resumeStore'
 import { templates } from '@/lib/templates'
+import { useSearchParams } from 'next/navigation'
 
 export default function TemplateSelector() {
   const { resume, updateResume } = useResumeStore()
   const currentTemplate = templates[resume.template] || templates.ats
-  const isProfessional = resume.subscriptionStatus === 'active'
+  const searchParams = useSearchParams()
+  const isDemoMode = searchParams.get('demo') === 'true'
+  const isProfessional = resume.subscriptionStatus === 'active' || isDemoMode
 
   return (
     <div className="bg-white rounded-xl md:rounded-2xl shadow-lg border-2 border-neutral-200 p-4 md:p-6 w-full">
@@ -31,6 +34,24 @@ export default function TemplateSelector() {
               </p>
               <p className="text-[11px] md:text-xs text-amber-800 mt-1">
                 Actualizá a PRO para acceder a más plantillas premium
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isDemoMode && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg md:rounded-xl p-3 mb-4">
+          <div className="flex items-start gap-2">
+            <svg className="w-4 h-4 md:w-5 md:h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div className="flex-1">
+              <p className="text-xs md:text-sm font-bold text-blue-900">
+                Modo demostración activado
+              </p>
+              <p className="text-[11px] md:text-xs text-blue-800 mt-1">
+                Podés ver todas las plantillas premium. Las descargas incluirán marca de agua.
               </p>
             </div>
           </div>

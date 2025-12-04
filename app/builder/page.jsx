@@ -88,10 +88,17 @@ export default function BuilderPage() {
     setShowExportMenu(false)
     
     try {
+      // Validar plan PRO para formatos que no sean PDF
+      if (format !== 'pdf' && !isProfessional) {
+        alert('El plan PRO es necesario para exportar en formato ' + format.toUpperCase())
+        setIsGenerating(false)
+        return
+      }
+
       // Breadcrumb para tracking de flujo
       addBreadcrumb({
         category: 'user_action',
-        message: 'User initiated PDF export',
+        message: `User initiated ${format.toUpperCase()} export`,
         level: 'info',
         data: { 
           format,
@@ -106,7 +113,58 @@ export default function BuilderPage() {
         ? resume 
         : { ...resume, coverLetter: '' }
       
-      // Generar HTML optimizado para impresión
+      // Exportación a PNG/JPG usando html2canvas
+      if (format === 'png' || format === 'jpg') {
+        const html2canvas = (await import('html2canvas')).default
+        
+        // Generar HTML optimizado
+        let html = generatePDFHTML(resumeToRender, template)
+        html = addWatermarkIfNeeded(html, resume.plan, resume.subscriptionStatus)
+        
+        // Crear elemento temporal oculto
+        const tempDiv = document.createElement('div')
+        tempDiv.style.position = 'absolute'
+        tempDiv.style.left = '-9999px'
+        tempDiv.style.width = '794px' // A4 width en px (210mm)
+        tempDiv.innerHTML = html
+        document.body.appendChild(tempDiv)
+        
+        // Esperar a que se carguen las imágenes
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Capturar como canvas
+        const canvas = await html2canvas(tempDiv.querySelector('body') || tempDiv, {
+          scale: 2, // Mayor calidad
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          width: 794,
+          windowWidth: 794
+        })
+        
+        // Limpiar elemento temporal
+        document.body.removeChild(tempDiv)
+        
+        // Convertir a blob y descargar
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `CV-${resume.name || 'documento'}.${format}`
+          a.click()
+          URL.revokeObjectURL(url)
+        }, format === 'jpg' ? 'image/jpeg' : 'image/png', 0.95)
+        
+        addBreadcrumb({
+          category: 'export',
+          message: `${format.toUpperCase()} image exported`,
+          level: 'info',
+          data: { format }
+        })
+        
+        return
+      }
+      
+      // Exportación a PDF (método original)
       let html = generatePDFHTML(resumeToRender, template)
       html = addWatermarkIfNeeded(html, resume.plan, resume.subscriptionStatus)
       
@@ -213,7 +271,7 @@ export default function BuilderPage() {
       <BuilderHeader 
         onReset={handleReset}
         hasAutosave={hasAutosave}
-        onExport={() => handleExport('pdf')}
+        onExport={handleExport}
         isGenerating={isGenerating}
       />
 

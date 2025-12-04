@@ -11,31 +11,14 @@ export default function PaymentMethodSelector({ resume, onClose }) {
   const [error, setError] = useState(null)
 
   const handleMercadoPago = async () => {
-    // Validación estricta de campos requeridos
-    const nombre = resume?.name?.trim()
-    const correo = resume?.email?.trim()
-
-    if (!nombre || nombre === '') {
-      setError('Por favor, completá tu NOMBRE en la sección Personal (arriba)')
-      return
-    }
-
-    if (!correo || correo === '') {
-      setError('Por favor, completá tu EMAIL en la sección Personal (arriba)')
-      return
-    }
-
-    // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(correo)) {
-      setError('Por favor, ingresá un email válido en la sección Personal')
-      return
-    }
-
     setProcessing(true)
     setError(null)
 
     try {
+      // Usar email y nombre si están disponibles, sino usar valores por defecto
+      const correo = resume?.email?.trim() || 'cliente@generadorcv.online'
+      const nombre = resume?.name?.trim() || 'Cliente'
+      
       console.log('🛒 Iniciando proceso de pago con Mercado Pago...')
       console.log('📧 Email:', correo)
       console.log('👤 Nombre:', nombre)
@@ -86,37 +69,6 @@ export default function PaymentMethodSelector({ resume, onClose }) {
           </button>
         )}
       </div>
-
-      {/* Aviso de datos requeridos */}
-      {(!resume?.name?.trim() || !resume?.email?.trim()) && (
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-          <div className="flex items-start gap-3">
-            <svg className="w-6 h-6 text-yellow-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <div>
-              <p className="font-semibold text-yellow-800 text-sm">
-                ⚠️ Completá estos datos antes de continuar:
-              </p>
-              <ul className="mt-2 text-sm text-yellow-700 space-y-1">
-                {!resume?.name?.trim() && (
-                  <li className="flex items-center gap-2">
-                    <span className="text-red-600">✗</span> Tu <strong>NOMBRE</strong> en la sección Personal
-                  </li>
-                )}
-                {!resume?.email?.trim() && (
-                  <li className="flex items-center gap-2">
-                    <span className="text-red-600">✗</span> Tu <strong>EMAIL</strong> en la sección Personal
-                  </li>
-                )}
-              </ul>
-              <p className="mt-2 text-xs text-yellow-600">
-                👇 Scrolleá hacia abajo y completá la sección "Personal" primero
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">

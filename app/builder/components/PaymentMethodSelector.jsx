@@ -111,7 +111,7 @@ export default function PaymentMethodSelector({ resume, onClose }) {
                 )}
               </ul>
               <p className="mt-2 text-xs text-yellow-600">
-                👆 Scrolleá hacia arriba y completá la sección "Personal" primero
+                👇 Scrolleá hacia abajo y completá la sección "Personal" primero
               </p>
             </div>
           </div>

@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter, Lexend } from 'next/font/google'
 import { headers } from 'next/headers'
 import Script from 'next/script'
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -211,6 +212,7 @@ export default function RootLayout({ children }) {
             `
           }}
         />
+        <Analytics />
       </body>
     </html>
   )

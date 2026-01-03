@@ -28,9 +28,10 @@ export function middleware(req) {
   // CSP moderna con nonces y strict-dynamic (Lighthouse 100)
   // strict-dynamic: permite scripts cargados dinámicamente por scripts con nonce
   // unsafe-eval: necesario solo para Next.js HMR en desarrollo
+  // unsafe-inline necesario para eventos onClick en desarrollo
   const cspHeader = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval' https://plausible.io https://vercel.live`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://plausible.io https://vercel.live`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https://plausible.io",

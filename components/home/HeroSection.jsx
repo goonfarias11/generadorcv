@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { trackEvent } from '@/lib/analytics'
 
@@ -30,10 +31,15 @@ export default function HeroSection() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4 mb-6 md:mb-8">
-          <button
-            onClick={() => {
-              trackEvent('cta_crear_cv', { position: 'landing_hero' });
-              router.push('/builder');
+          <Link
+            href="/builder"
+            onClick={(e) => {
+              console.log('Link clickeado - navegando a /builder');
+              try {
+                trackEvent('cta_crear_cv', { position: 'landing_hero' });
+              } catch (err) {
+                console.error('Error en trackEvent:', err);
+              }
             }}
             className="btn-primary text-sm md:text-base lg:text-lg px-6 md:px-8 py-3 md:py-3.5 shadow-glow flex items-center gap-2 justify-center"
           >
@@ -41,7 +47,7 @@ export default function HeroSection() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             Crear CV Gratis
-          </button>
+          </Link>
           <button
             onClick={() => document.getElementById('plantillas')?.scrollIntoView({ behavior: 'smooth' })}
             className="btn-secondary text-sm md:text-base lg:text-lg px-6 md:px-8 py-3 md:py-3.5 flex items-center gap-2 justify-center"

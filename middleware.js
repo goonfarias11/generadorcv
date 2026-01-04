@@ -23,6 +23,13 @@ export function middleware(req) {
 // Aplicar solo a páginas HTML, no a archivos estáticos
 export const config = {
   matcher: [
-    '/((?!_next|api|.*\\..*).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files with extensions (images, etc.)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|mp4|woff|woff2)$).*)',
   ],
 };

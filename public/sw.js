@@ -55,6 +55,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Solo manejar peticiones GET (no POST, PUT, DELETE)
+  if (request.method !== 'GET') {
+    return;
+  }
+
   // Ignorar API de Vercel Analytics y otros servicios externos
   // CRÍTICO: NO cachear archivos de Next.js, Vercel los maneja mejor
   if (
@@ -71,8 +76,12 @@ self.addEventListener('fetch', (event) => {
       // Stale-While-Revalidate: devolver cache inmediatamente
       const fetchPromise = fetch(request)
         .then((networkResponse) => {
-          // Solo cachear respuestas exitosas
-          if (networkResponse && networkResponse.status === 200) {
+          // Solo cachear respuestas exitosas GET
+          if (
+            networkResponse && 
+            networkResponse.status === 200 && 
+            request.method === 'GET'
+          ) {
             const responseClone = networkResponse.clone();
             
             // Cachear en dinámico (excepto API)

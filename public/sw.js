@@ -1,7 +1,7 @@
 // Service Worker para GeneradorCV PWA
 // Estrategia: App Shell + Stale-While-Revalidate
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2'; // Incrementado para limpiar caches corruptos
 const STATIC_CACHE = `generadorcv-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `generadorcv-dynamic-${CACHE_VERSION}`;
 const OFFLINE_PAGE = '/offline.html';
@@ -56,10 +56,11 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Ignorar API de Vercel Analytics y otros servicios externos
+  // CRÍTICO: NO cachear archivos de Next.js, Vercel los maneja mejor
   if (
     url.hostname.includes('vercel.live') ||
     url.hostname.includes('mercadopago.com') ||
-    url.pathname.startsWith('/_next/webpack-hmr') ||
+    url.pathname.startsWith('/_next/') || // Excluir TODO _next (static, image, data)
     url.pathname.startsWith('/api/webhooks')
   ) {
     return;

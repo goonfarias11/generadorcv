@@ -1,0 +1,368 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ProductSpec {
+  id            String   @id @default(cuid())
+  mode          String
+  productType   String
+  objective     String
+  industry      String?
+  sections      Json
+  designSystem  String
+  copyTone      String
+  complexity    String
+  deliveryTime  String
+  priceEstimate Float
+  status        String   @default("generated")
+  deliveryPath  String?
+  deployStatus  String?
+  deployUrl     String?
+  deployedAt    DateTime?
+  partnerId     String?
+  customerId    String?
+  agencyId      String?
+  createdById   String?
+  apiKeyId      String?
+  planId        String?
+  planStatus    String?
+  planExpiresAt DateTime?
+  createdAt     DateTime @default(now())
+  leads         Lead[]
+  payments      Payment[]
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  agency        Agency? @relation(fields: [agencyId], references: [id])
+  createdBy     Customer? @relation("SpecCreator", fields: [createdById], references: [id])
+  apiKey        ApiKey? @relation(fields: [apiKeyId], references: [id])
+  plan          Plan? @relation(fields: [planId], references: [id])
+  subscription  Subscription?
+  aiOutputs     AIServiceOutput[]
+  pluginInstalls PluginInstall[]
+
+  partner Partner? @relation(fields: [partnerId], references: [id])
+  customDomain CustomDomain?
+  addOns AddOn[] @relation("SpecAddOns")
+}
+
+model Plan {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  priceCents     Int
+  interval       String
+  features       Json?
+  stripeProductId String?
+  stripePriceId   String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  specs          ProductSpec[]
+  subscriptions  Subscription[]
+}
+
+model Subscription {
+  id                      String   @id @default(cuid())
+  specId                  String   @unique
+  planId                  String
+  stripeSubscriptionId    String?  @unique
+  stripeCheckoutSessionId String?  @unique
+  status                  String
+  currentPeriodEnd        DateTime?
+  cancelAtPeriodEnd       Boolean  @default(false)
+  partnerShareCents       Int?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  spec ProductSpec @relation(fields: [specId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id])
+}
+
+model Partner {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  logoUrl      String?
+  primaryColor String?
+  commissionPct Int     @default(30)
+  balanceCents  Int     @default(0)
+  stripeAccountId String?
+  payoutsEnabled  Boolean  @default(false)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  specs        ProductSpec[]
+  templates    Template[]
+  payouts      PartnerPayout[]
+  payments     Payment[]
+  apiKeys      ApiKey[]
+  plugins      Plugin[]
+}
+
+model CustomDomain {
+  id        String   @id @default(cuid())
+  specId    String   @unique
+  domain    String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  spec ProductSpec @relation(fields: [specId], references: [id])
+}
+
+model Template {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  category    String
+  baseSpec    Json
+  priceUSD    Int
+  tier        String
+  coverImage   String?
+  shortTagline String   @default("Template listo para lanzar")
+  useCases     Json?
+  popularity   Int      @default(0)
+  isPublic     Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  partnerSlug String?
+  createdAt   DateTime @default(now())
+  partner      Partner? @relation(fields: [partnerSlug], references: [slug])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  specId    String
+  name      String
+  email     String
+  company   String?
+  message   String?
+  createdAt DateTime @default(now())
+
+  spec ProductSpec @relation(fields: [specId], references: [id])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  specId        String
+  stripeSession String   @unique
+  amount        Int
+  baseAmount    Int
+  addOnAmount   Int
+  addOnIds      Json?
+  aiServiceIds  Json?
+  pluginIds     Json?
+  currency      String   @default("usd")
+  status        String   @default("pending")
+  email         String?
+  partnerId     String?
+  partnerShare  Int?
+  customerId    String?
+  createdAt     DateTime @default(now())
+
+  spec ProductSpec @relation(fields: [specId], references: [id])
+  partner Partner? @relation(fields: [partnerId], references: [id])
+  customer Customer? @relation(fields: [customerId], references: [id])
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+
+  specs     ProductSpec[]
+  createdSpecs ProductSpec[] @relation("SpecCreator")
+  payments  Payment[]
+  loginTokens LoginToken[]
+  agencyMemberships AgencyMember[]
+  ownedAgencies Agency[] @relation("AgencyOwner")
+  agencyAuditLogs AgencyAuditLog[] @relation("AgencyLogActor")
+}
+
+model LoginToken {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  customerId String
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime @default(now())
+
+  customer Customer @relation(fields: [customerId], references: [id])
+}
+
+model AddOn {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  priceCents  Int
+  type        String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  specs       ProductSpec[] @relation("SpecAddOns")
+}
+
+model AIService {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  priceCents  Int
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  outputs     AIServiceOutput[]
+}
+
+model AIServiceOutput {
+  id        String   @id @default(cuid())
+  specId    String
+  serviceId String
+  status    String   @default("pending")
+  output    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spec    ProductSpec @relation(fields: [specId], references: [id])
+  service AIService @relation(fields: [serviceId], references: [id])
+
+  @@unique([specId, serviceId])
+}
+
+model PartnerPayout {
+  id          String   @id @default(cuid())
+  partnerId   String
+  amountCents Int
+  status      String
+  transferId  String?
+  transferStatus String?
+  paymentId   String?
+  errorMessage String?
+  createdAt   DateTime @default(now())
+
+  partner Partner @relation(fields: [partnerId], references: [id])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  name      String
+  partnerId String?
+  isActive  Boolean  @default(true)
+  rateLimit Int      @default(1000)
+  createdAt DateTime @default(now())
+
+  partner  Partner? @relation(fields: [partnerId], references: [id])
+  specs    ProductSpec[]
+  requests ApiRequestLog[]
+}
+
+model ApiRequestLog {
+  id          String   @id @default(cuid())
+  apiKeyId    String
+  endpoint    String
+  method      String
+  status      Int
+  costEstimate Int
+  createdAt   DateTime @default(now())
+
+  apiKey ApiKey @relation(fields: [apiKeyId], references: [id])
+}
+
+model Plugin {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  version     String
+  entryPoint  String
+  scope       String
+  priceCents  Int
+  isActive    Boolean  @default(false)
+  authorId    String
+  createdAt   DateTime @default(now())
+
+  author   Partner @relation(fields: [authorId], references: [id])
+  installs PluginInstall[]
+}
+
+model PluginInstall {
+  id            String   @id @default(cuid())
+  pluginId      String
+  specId        String
+  pluginVersion String
+  installedAt   DateTime @default(now())
+
+  plugin Plugin @relation(fields: [pluginId], references: [id])
+  spec   ProductSpec @relation(fields: [specId], references: [id])
+
+  @@unique([pluginId, specId])
+}
+
+model Agency {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  ownerId      String
+  branding     Json?
+  customDomain String?
+  createdAt    DateTime @default(now())
+
+  owner   Customer @relation("AgencyOwner", fields: [ownerId], references: [id])
+  members AgencyMember[]
+  specs   ProductSpec[]
+  billing AgencyBilling?
+  logs    AgencyAuditLog[]
+}
+
+model AgencyMember {
+  id       String   @id @default(cuid())
+  agencyId String
+  userId   String
+  role     String
+
+  agency Agency @relation(fields: [agencyId], references: [id])
+  user   Customer @relation(fields: [userId], references: [id])
+
+  @@unique([agencyId, userId])
+}
+
+model AgencyPlan {
+  id        String   @id @default(cuid())
+  name      String
+  limits    Json
+  features  Json
+  createdAt DateTime @default(now())
+
+  billings AgencyBilling[]
+}
+
+model AgencyBilling {
+  id                    String   @id @default(cuid())
+  agencyId              String   @unique
+  planId                String
+  status                String
+  stripeSubscriptionId  String?
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  agency Agency @relation(fields: [agencyId], references: [id])
+  plan   AgencyPlan @relation(fields: [planId], references: [id])
+}
+
+model AgencyAuditLog {
+  id        String   @id @default(cuid())
+  agencyId  String
+  actorId   String?
+  action    String
+  targetId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  agency Agency @relation(fields: [agencyId], references: [id])
+  actor  Customer? @relation("AgencyLogActor", fields: [actorId], references: [id])
+}
